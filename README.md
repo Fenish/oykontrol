@@ -44,7 +44,7 @@ python main.py
 
 ## Canlı Demo
 
-https://oykontrol.fenish.dev
+https://www.oykontrol.net
 
 <br><br>
 
