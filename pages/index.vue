@@ -69,7 +69,7 @@ function validateTckn() {
         :class="chpData ? `mt-20` : ``"
       >
         <span class="text-white text-3xl select-none">TC Kimlik No</span>
-        <span class="text-zinc-400 text-lg select-none">
+        <span class="text-zinc-400 text-lg select-none text-center">
           Sandığınızdaki oy sonuçlarını karşılaştırmak için tc kimlik numaranızı
           girin
         </span>
