@@ -16,15 +16,16 @@ useHead({
 });
 
 const tcKimlikNo = ref("");
-let chpData = ref(undefined);
 const loading = ref(false);
+let chpData = ref(undefined);
+const config = useRuntimeConfig().public;
 
 async function sorgula() {
   if (!validateTckn()) return;
   loading.value = true;
   chpData.value = undefined;
   const { data, error } = await useAsyncData("chpFetch", () =>
-    $fetch(`https://afg.theyka.net/chpfetch?tckn=${tcKimlikNo.value}`)
+    $fetch(`${config.apiUrl}/chpfetch?tckn=${tcKimlikNo.value}`)
   );
   if (error.value) {
     toast.error("Bir hata oluştu. Lütfen tekrar deneyin.", {

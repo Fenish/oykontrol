@@ -9,11 +9,12 @@ const props = defineProps({
 const chpPanel = ref("");
 const oyVeOtesiPanel = ref("");
 const tutanakUrl = ref(undefined);
+const config = useRuntimeConfig().public;
 
 onMounted(async () => {
   const [il, ilce, sandik_no] = props.chpData.konum.split("/");
   const { data } = await useFetch(
-    `https://afg.theyka.net/oyveotesi?&city_name=${il}&district_name=${ilce}&ballot_box_id=${sandik_no}`
+    `${config.apiUrl}/oyveotesi?&city_name=${il}&district_name=${ilce}&ballot_box_id=${sandik_no}`
   );
 
   const ovo_data: any = data.value;
