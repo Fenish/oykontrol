@@ -73,13 +73,16 @@ function validateTckn() {
           Sandığınızdaki oy sonuçlarını karşılaştırmak için tc kimlik numaranızı
           girin
         </span>
-        <input
-          type="text"
-          v-model="tcKimlikNo"
-          class="text-white mt-5"
-          oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-          maxlength="11"
-        />
+        <div>
+          <input
+            type="text"
+            v-model="tcKimlikNo"
+            class="text-white mt-5"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+            maxlength="11"
+          />
+        </div>
+
         <div class="flex justify-center items-center mt-8">
           <button
             type="button"
@@ -188,9 +191,10 @@ function validateTckn() {
 
 <style scoped>
 input {
+  display: block;
   border: none;
   padding: 0;
-  width: 235px;
+  width: 16.5ch;
   background: repeating-linear-gradient(
       90deg,
       dimgrey 0,
@@ -198,9 +202,9 @@ input {
       transparent 0,
       transparent 1.5ch
     )
-    0 100%/16ch 3px no-repeat;
-  letter-spacing: 0.5ch;
+    0 100%/ 16ch 3px no-repeat;
   font: 3ch droid sans mono, consolas, monospace;
+  letter-spacing: 0.5ch;
   color: dodgerblue;
 }
 input:focus {
