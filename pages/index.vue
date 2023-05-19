@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { debug } from "console";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
-const tcKimlikNo = ref("");
 useHead({
   title: ".:: Oy Kontrol ::. ",
   meta: [
@@ -15,25 +15,49 @@ useHead({
   ],
 });
 
+const tcKimlikNo = ref("");
 let chpData = ref(undefined);
+const loading = ref(false);
+
 async function sorgula() {
+  if (!validateTckn()) return;
+  loading.value = true;
   chpData.value = undefined;
+  const { data, error } = await useAsyncData("chpFetch", () =>
+    $fetch(`https://afg.theyka.net/chpfetch?tckn=${tcKimlikNo.value}`)
+  );
+  if (error.value) {
+    toast.error("Bir hata oluştu. Lütfen tekrar deneyin.", {
+      theme: "dark",
+    });
+  }
+  if (data) {
+    chpData.value = data.value as undefined;
+  }
+  tcKimlikNo.value = "";
+  loading.value = false;
+  debugger;
+}
+
+function validateTckn() {
+  if (tcKimlikNo.value.length != 11) return false;
+  const splittedTckn = tcKimlikNo.value.split("");
+  const sumOfFirstTenDigits =
+    splittedTckn
+      .slice(0, 10)
+      .map((digit) => parseInt(digit))
+      .reduce((a, b) => a + b) % 10;
+
+  if (parseInt(splittedTckn[10]) != sumOfFirstTenDigits) {
+    toast.error("TC Kimlik Numarası hatalı.", { theme: "dark" });
+    return false;
+  }
 
   if (tcKimlikNo.value.length != 11) {
     toast.error("TC Kimlik Numarası 11 haneli olmalıdır.", { theme: "dark" });
-    return;
+    return false;
   }
-
-  await useFetch(`https://afg.theyka.net/chpfetch?tckn=${tcKimlikNo.value}`, {
-    onResponseError({ response, error }) {
-      toast.error("Bir hata oluştu. Lütfen tekrar deneyin.", { theme: "dark" });
-    },
-    onResponse({ response }) {
-      chpData.value = response._data;
-    },
-  });
-  tcKimlikNo.value = "";
-  // chpData.value = json;
+  return true;
 }
 </script>
 
@@ -56,31 +80,107 @@ async function sorgula() {
           oninput="this.value = this.value.replace(/[^0-9]/g, '');"
           maxlength="11"
         />
-        <button
-          type="button"
-          @click="sorgula"
-          class="select-none mt-8 w-32 border font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 border-blue-500 text-blue-500 hover:text-white hover:bg-blue-500"
-        >
-          Sorgula
-        </button>
+        <div class="flex justify-center items-center mt-8">
+          <button
+            type="button"
+            @click="sorgula"
+            class="h-22 w-32 flex justify-center items-center select-none border font-medium rounded-lg text-sm px-10 py-3 text-center mr-2 border-blue-500 text-blue-500"
+            :class="
+              tcKimlikNo.length != 11 || loading
+                ? `opacity-50 cursor-not-allowed`
+                : `hover:text-white hover:bg-blue-500 cursor-pointer`
+            "
+          >
+            <div class="flex">
+              <span
+                v-if="!loading"
+                class="flex justify-center items-center text-lg"
+                >Sorgula</span
+              >
+              <svg
+                v-if="loading"
+                width="28"
+                height="28"
+                viewBox="0 0 38 38"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient
+                    x1="8.042%"
+                    y1="0%"
+                    x2="65.682%"
+                    y2="23.865%"
+                    id="a"
+                  >
+                    <stop stop-color="#fff" stop-opacity="0" offset="0%" />
+                    <stop
+                      stop-color="#fff"
+                      stop-opacity=".631"
+                      offset="63.146%"
+                    />
+                    <stop stop-color="#fff" offset="100%" />
+                  </linearGradient>
+                </defs>
+                <g fill="none" fill-rule="evenodd">
+                  <g transform="translate(1 1)">
+                    <path
+                      d="M36 18c0-9.94-8.06-18-18-18"
+                      id="Oval-2"
+                      stroke="url(#a)"
+                      stroke-width="2"
+                    >
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 18 18"
+                        to="360 18 18"
+                        dur="0.9s"
+                        repeatCount="indefinite"
+                      />
+                    </path>
+                    <circle fill="#fff" cx="36" cy="18" r="1">
+                      <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 18 18"
+                        to="360 18 18"
+                        dur="0.9s"
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                  </g>
+                </g>
+              </svg>
+            </div>
+          </button>
+        </div>
       </div>
       <div v-if="chpData" class="flex w-full justify-center">
         <Results :chpData="chpData" />
       </div>
-      <div class="select-none mt-5">
-        <a
-          href="https://oyveotesi.org/"
-          target="_blank"
-          class="text-white/50 hover:text-white/80 cursor-pointer"
-          >Oy ve Ötesi</a
-        >
-        <span class="text-white/50 ml-3 mr-3 select-none">x</span>
-        <a
-          href="https://sts.chp.org.tr/"
-          target="_blank"
-          class="text-white/50 hover:text-white/80 cursor-pointer"
-          >CHP / YSK</a
-        >
+      <div class="mt-5 flex flex-col items-center text-gray-300">
+        <!--
+        <div class="flex gap-1.5">
+          <span> Toplamda </span>
+          <span class="text-sky-400"> 31</span>
+          <span> kişi sandığını kontrol etti</span>
+        </div>
+        -->
+        <div class="select-none">
+          <a
+            href="https://oyveotesi.org/"
+            target="_blank"
+            class="text-white/50 hover:text-white/80 cursor-pointer"
+            >Oy ve Ötesi</a
+          >
+          <span class="text-white/50 ml-3 mr-3 select-none">x</span>
+          <a
+            href="https://sts.chp.org.tr/"
+            target="_blank"
+            class="text-white/50 hover:text-white/80 cursor-pointer"
+            >CHP / YSK</a
+          >
+        </div>
       </div>
     </div>
   </div>
