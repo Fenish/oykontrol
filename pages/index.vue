@@ -37,7 +37,6 @@ async function sorgula() {
   }
   tcKimlikNo.value = "";
   loading.value = false;
-  debugger;
 }
 
 function validateTckn() {
