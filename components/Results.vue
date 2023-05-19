@@ -10,15 +10,13 @@ const chpPanel = ref("");
 const oyVeOtesiPanel = ref("");
 const tutanakUrl = ref(undefined);
 
-const [il, ilce, sandik_no] = props.chpData.konum.split("/");
-
 onMounted(async () => {
+  const [il, ilce, sandik_no] = props.chpData.konum.split("/");
   const { data } = await useFetch(
     `https://afg.theyka.net/oyveotesi?&city_name=${il}&district_name=${ilce}&ballot_box_id=${sandik_no}`
   );
 
   const ovo_data: any = data.value;
-  console.log(ovo_data);
   const oyveotesi_data: any = {
     "RECEP TAYYİP ERDOĞAN": ovo_data["recep_tayyip"],
     "MUHARREM İNCE": ovo_data["muharrem_ince"],
@@ -26,10 +24,7 @@ onMounted(async () => {
     "SİNAN OĞAN": ovo_data["sinan_ogan"],
   };
 
-  tutanakUrl.value = ovo_data["image_url"].replace(
-    "/oyveotesi/raw/",
-    "/oyveotesi/blurred-min/"
-  );
+  tutanakUrl.value = ovo_data["image_url"].replace("/raw/", "/blurred-min/");
   oyVeOtesiPanel.value = oyveotesi_data;
   chpPanel.value = props.chpData.adaylar;
 });
@@ -40,12 +35,6 @@ onMounted(async () => {
     class="flex border-zinc-700 rounded-md justify-between m-10 mx-28 flex-col lg:flex-row gap-10 w-full"
     v-if="chpPanel != '' && oyVeOtesiPanel != ''"
   >
-    <!--
-    <DataPanel :data="oyVeOtesiPanel" title="Oy ve Ötesi" />
-    <DiffPanel :data="diffData" title="Oy ve Ötesi" />
-    <DataPanel :data="chpPanel" title="CHP/YSK" />
-  -->
-
     <div class="w-full overflow-x-auto p-4">
       <div class="overflow-hidden min-w-max">
         <div
