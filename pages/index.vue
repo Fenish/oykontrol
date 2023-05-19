@@ -10,7 +10,7 @@ useHead({
       hid: "description",
       name: "description",
       content:
-        "Oy kontrol, chp ve ysk verilerini karşılaştıran bir uygulamadır. Bu site ile sandığınızda herhangi bir usulsüzlük olup olmadığını kontrol edebilirsiniz.",
+        "Oy kontrol, chp ve oy ve ötesi verilerini karşılaştıran bir uygulamadır. Bu site ile sandığınızda herhangi bir usulsüzlük olup olmadığını kontrol edebilirsiniz.",
     },
   ],
 });
