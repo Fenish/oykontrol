@@ -11,7 +11,7 @@
     <a href="https://github.com/fenish/EasyTube/graphs/contributors">
         <img src="https://img.shields.io/github/contributors/fenish/oykontrol?color=blue&logo=github&style=for-the-badge"/>
     </a>&nbsp;&nbsp;
-    <a href="https://github.com/Fenish/EasyTube/stargazers">
+    <a href="https://github.com/Fenish/oykontrol/stargazers">
         <img src="https://img.shields.io/github/stars/fenish/oykontrol?color=blue&style=for-the-badge"/>
     </a>
   </div>
