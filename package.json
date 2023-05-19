@@ -1,0 +1,21 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.4",
+    "@types/node": "^18",
+    "nuxt": "^3.5.0"
+  },
+  "dependencies": {
+    "@nuxtjs/tailwindcss": "^6.7.0",
+    "better-sqlite3": "^8.3.0",
+    "vue3-toastify": "^0.1.9"
+  }
+}
